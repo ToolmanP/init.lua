@@ -4,6 +4,8 @@ return {
     local opt = vim.opt
     local o = vim.o
 
+    g.base46_cache = vim.fn.stdpath 'data' .. '/nvchad/base46/'
+
     g.mapleader = ' '
     g.maplocalleader = ' '
     -- Set to true if you have a Nerd Font installed and selected in the terminal

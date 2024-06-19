@@ -80,6 +80,7 @@ return {
             require('telescope.themes').get_dropdown(),
           },
         },
+        extensions_list = { 'themes', 'terms' },
       }
 
       -- Enable Telescope extensions if they are installed

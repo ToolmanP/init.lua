@@ -18,19 +18,19 @@ M.setup = function()
   end ---@diagnostic disable-next-line: undefined-field
   vim.opt.rtp:prepend(lazypath)
 
-  local autopairs = require "editor.plugins.autopairs"
-  local cmp = require "editor.plugins.cmp"
-  local formatter = require "editor.plugins.formatter"
-  local git = require "editor.plugins.git"
-  local interface = require "editor.plugins.interface"
-  local linter = require "editor.plugins.linter"
-  local lsp = require "editor.plugins.lsp"
-  local nuance = require "editor.plugins.nuance"
-  local treesitters = require "editor.plugins.treesitters"
-  local rice = require "editor.plugins.rice"
+  local autopairs = require 'editor.plugins.autopairs'
+  local cmp = require 'editor.plugins.cmp'
+  local formatter = require 'editor.plugins.formatter'
+  local git = require 'editor.plugins.git'
+  local interface = require 'editor.plugins.interface'
+  local linter = require 'editor.plugins.linter'
+  local lsp = require 'editor.plugins.lsp'
+  local nuance = require 'editor.plugins.nuance'
+  local treesitters = require 'editor.plugins.treesitters'
+  local ui = require 'editor.plugins.ui'
 
-  local plugins = merge_plugins({
-    rice,
+  local plugins = merge_plugins {
+    ui,
     lsp,
     cmp,
     git,
@@ -39,8 +39,8 @@ M.setup = function()
     interface,
     autopairs,
     formatter,
-    treesitters
-  })
+    treesitters,
+  }
 
   local lazy_opts = {
     ui = {
@@ -64,7 +64,7 @@ M.setup = function()
     },
   }
 
-  require('lazy').setup(plugins,lazy_opts)
+  require('lazy').setup(plugins, lazy_opts)
 end
 
 return M
