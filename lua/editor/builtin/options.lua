@@ -17,6 +17,8 @@ return {
 
     -- Make line numbers default
     opt.number = true
+
+    opt.relativenumber = true
     -- You can also add relative line numbers, to help with jumping.
     --  Experiment for yourself to see if you like it!
     -- opt.relativenumber = true
@@ -66,7 +68,7 @@ return {
     opt.inccommand = 'split'
 
     -- Show which line your cursor is on
-    opt.cursorline = true
+    opt.cursorline = false
 
     -- Minimal number of screen lines to keep above and below the cursor.
     opt.scrolloff = 10
