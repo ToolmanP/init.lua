@@ -78,7 +78,10 @@ M.ui = {
 }
 
 M.base46 = {
-  integrations = {},
+  integrations = {
+    'rainbowdelimiters',
+    'neogit',
+  },
 }
 
 return M
