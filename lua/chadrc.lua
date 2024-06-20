@@ -2,6 +2,7 @@ local M = {}
 
 M.ui = {
   theme = 'nord',
+  transparency = false,
 
   -- hl_override = {
   -- 	Comment = { italic = true },
