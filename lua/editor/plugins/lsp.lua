@@ -6,9 +6,9 @@ local lsp_keymap = function(event, client)
   map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-  map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-  map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  map('<leader>Ld', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+  map('<leader>Ls', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  map('<leader>Lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   map('<leader>rn', require 'nvchad.lsp.renamer', '[R]e[n]ame')
   map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
@@ -33,6 +33,63 @@ local servers = {
       },
     },
   },
+  pylsp = {
+    settings = {
+      pylsp = {
+        plugins = {
+          autopep8 = {
+            enabled = true,
+          },
+          black = {
+            enabled = false,
+          },
+          jedi_completion = {
+            enabled = true,
+            fuzzy = true,
+          },
+          jedi_definition = {
+            enabled = true,
+            follow_imports = true,
+            follow_builtin_imports = true,
+            follow_builtin_definitions = true,
+          },
+          jedi_hover = {
+            enabled = true,
+          },
+          jedi_references = {
+            enabled = true,
+          },
+          jedi_signature_help = {
+            enabled = true,
+          },
+          jedi_symbols = {
+            enabled = true,
+            all_scopes = true,
+            include_import_symbols = true,
+          },
+          pydocstyle = {
+            enabled = true,
+          },
+          ruff = {
+            enabled = true,
+          },
+          pylint = {
+            enabled = true,
+          },
+          pyflakes = {
+            enabled = true,
+          },
+        },
+      },
+    },
+  },
+  clangd = {},
+  gopls = {},
+}
+
+local ensured_installed = {
+  'stylua',
+  'prettier',
 }
 
 ------------------------------------------------------------------------------------------
@@ -70,8 +127,15 @@ return {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
       { 'folke/neodev.nvim', opts = {} },
+      {
+        'ray-x/lsp_signature.nvim',
+        event = 'VeryLazy',
+        opts = {},
+        config = function(_, opts)
+          require('lsp_signature').setup(opts)
+        end,
+      },
     },
 
     config = function()
@@ -92,16 +156,47 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       require('mason').setup()
-      require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(servers) }
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      require('mason-tool-installer').setup { ensure_installed = ensured_installed }
+      local lspconfig = require 'lspconfig'
+      for server, opts in pairs(servers) do
+        lspconfig[server].setup(opts)
+      end
     end,
+  },
+  --- Language specific
+  {
+    'ray-x/go.nvim',
+    dependencies = { -- optional packages
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require('go').setup()
+    end,
+    event = { 'CmdlineEnter' },
+    ft = { 'go', 'gomod' },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^4', -- Recommended
+    lazy = false, -- This plugin is already lazy
+    config = function()
+      vim.g.rustaceanvim = function()
+        return {
+          tools = {},
+          server = {
+            on_attach = function(client, bufnr) end,
+            default_settings = {
+              ['rust-analyzer'] = {},
+            },
+          },
+          -- DAP configuration
+          dap = {},
+        }
+      end
+    end,
+    ft = { 'rust' },
   },
 }

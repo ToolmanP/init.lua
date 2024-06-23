@@ -6,91 +6,153 @@
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
 
-return {
-  -- NOTE: Yes, you can install new plugins here!
-  'mfussenegger/nvim-dap',
-  -- NOTE: And you can specify dependencies as well
-  dependencies = {
-    -- Creates a beautiful debugger UI
-    'rcarriga/nvim-dap-ui',
+local function telescope_start()
+  local builtin = require 'telescope.builtin'
+  local dap = require 'dap'
+  local file_type = vim.bo.filetype
+  local cmd = nil
 
-    -- Required dependency for nvim-dap-ui
-    'nvim-neotest/nvim-nio',
+  if file_type == 'python' then
+    cmd = { 'fd', '-e', 'py' }
+  elseif file_type == 'typescript' or file_type == 'javascript' or file_type == 'html' then
+    cmd = { 'fd', '-e', 'js', '-e', 'ts', '-e', 'html' }
+  else
+    cmd = { 'fd', '-t', 'x', '--no-ignore' }
+  end
 
-    -- Installs the debug adapters for you
-    'williamboman/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
+  local selection = nil
 
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
-  },
-  config = function()
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+  local opts = {
+    prompt_title = 'Dap Start Debugging',
+    find_command = cmd,
+    attach_mappings = function(prompt_bufnr)
+      local actions = require 'telescope.actions'
+      local actions_state = require 'telescope.actions.state'
+      actions.select_default:replace(function()
+        selection = actions_state.get_selected_entry()
+        if dap.configurations[file_type] and selection then
+          for i, _ in ipairs(dap.configurations[file_type]) do
+            if dap.configurations[file_type][i].replace then
+              dap.configurations[file_type][i].program = vim.fn.getcwd() .. '/' .. selection.value
+            end
+          end
+        end
+        require('telescope').extensions.dap.configurations {
+          language_filter = function(lang)
+            return lang == file_type
+          end,
+        }
+      end)
+      return true
+    end,
+    previewer = false,
+  }
+  builtin.find_files(opts)
+end
 
-    require('mason-nvim-dap').setup {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
-      automatic_installation = true,
+local function setup_llvm()
+  local dap = require 'dap'
 
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
+  dap.adapters.cppdbg = {
+    id = 'cppdbg',
+    type = 'executable',
+    command = vim.fn.expand '$HOME/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+  }
 
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
-      },
-    }
-
-    -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>B', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end, { desc = 'Debug: Set Breakpoint' })
-
-    -- Dap UI setup
-    -- For more information, see |:help nvim-dap-ui|
-    dapui.setup {
-      -- Set icons to characters that are more likely to work in every terminal.
-      --    Feel free to remove or use ones that you like more! :)
-      --    Don't feel like these are good choices.
-      icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-      controls = {
-        icons = {
-          pause = '⏸',
-          play = '▶',
-          step_into = '⏎',
-          step_over = '⏭',
-          step_out = '⏮',
-          step_back = 'b',
-          run_last = '▶▶',
-          terminate = '⏹',
-          disconnect = '⏏',
+  dap.configurations.cpp = {
+    {
+      name = 'Launch file',
+      type = 'cppdbg',
+      request = 'launch',
+      program = '{file}',
+      cwd = '${workspaceFolder}',
+      stopAtEntry = true,
+      miDebuggerPath = '/usr/bin/gdb',
+      setupCommands = {
+        {
+          text = '-enable-pretty-printing',
+          description = 'enable pretty printing',
+          ignoreFailures = false,
         },
       },
-    }
+      replace = true,
+    },
+  }
 
-    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
+  dap.configurations.c = dap.configurations.cpp
+  dap.configurations.rust = dap.configurations.cpp
+end
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
+return {
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      { 'nvim-neotest/nvim-nio' },
+      { 'MunifTanjim/nui.nvim' },
+      { 'mfussenegger/nvim-dap-python', ft = { 'python' } },
+      { 'leoluz/nvim-dap-go', ft = { 'go' } },
+      { 'rcarriga/nvim-dap-ui' },
+      { 'nvim-telescope/telescope-dap.nvim' },
+    },
+    config = function()
+      require('editor.themes').setup()
+      require('dap-go').setup {}
+      require('dap-python').setup '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python'
+      setup_llvm()
 
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
-      },
-    }
-  end,
+      if vim.fn.filereadable '.vscode/launch.json' then
+        require('dap.ext.vscode').load_launchjs()
+      end
+
+      local dap = require 'dap'
+      local dapui = require 'dapui'
+      local dtelescope = require('telescope').extensions.dap
+
+      vim.keymap.set('n', '<leader>ds', telescope_start, { desc = 'Debug: Start' })
+      vim.keymap.set('n', '<leader>dc', function()
+        dap.continue { new = false }
+      end, { desc = 'Debug: Continue' })
+
+      vim.keymap.set('n', '<leader>dpi', dap.step_into, { desc = 'Debug: Step Into' })
+      vim.keymap.set('n', '<leader>dpo', dap.step_over, { desc = 'Debug: Step Over' })
+      vim.keymap.set('n', '<leader>dpu', dap.step_out, { desc = 'Debug: Step Out' })
+      vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+      vim.keymap.set({ 'n', 'x' }, '<leader>de', dapui.eval, { desc = 'Debug: Eval the context' })
+
+      vim.keymap.set('n', '<leader>df', dtelescope.frames, { desc = 'Debug: Get Frames' })
+      vim.keymap.set('n', '<leader>dl', dtelescope.list_breakpoints, { desc = 'Debug: List Breakpoints' })
+
+      vim.keymap.set('n', '<leader>dB', function()
+        dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+      end, { desc = 'Debug: Set Breakpoint' })
+
+      vim.keymap.set('n', '<leader>DT', dapui.toggle, { desc = 'Debug: See last session result.' })
+      dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+      dap.listeners.before.event_terminated['dapui_config'] = dapui.close
+      dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+      dapui.setup {
+        icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+        controls = {
+          enabled = false,
+        },
+        layouts = {
+          {
+            elements = {
+              {
+                id = 'repl',
+                size = 0.5,
+              },
+              {
+                id = 'console',
+                size = 0.5,
+              },
+            },
+            position = 'bottom',
+            size = 10,
+          },
+        },
+      }
+    end,
+  },
 }

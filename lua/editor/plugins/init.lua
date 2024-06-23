@@ -20,6 +20,7 @@ M.setup = function()
 
   local autopairs = require 'editor.plugins.autopairs'
   local cmp = require 'editor.plugins.cmp'
+  local debug = require 'editor.plugins.debug'
   local formatter = require 'editor.plugins.formatter'
   local git = require 'editor.plugins.git'
   local interface = require 'editor.plugins.interface'
@@ -34,6 +35,7 @@ M.setup = function()
     lsp,
     cmp,
     git,
+    debug,
     linter,
     nuance,
     interface,
