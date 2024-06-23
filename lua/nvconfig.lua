@@ -6,8 +6,8 @@ M.ui = {
   hl_add = {},
   hl_override = {},
   changed_themes = {},
-  theme_toggle = { 'nord' },
-  theme = 'nord', -- default theme
+  theme_toggle = { 'onenord' },
+  theme = 'onenord', -- default theme
   transparency = false,
 
   cmp = {
@@ -30,9 +30,9 @@ M.ui = {
 
   -- lazyload it when there are 1+ buffers
   tabufline = {
-    enabled = false,
+    enabled = true,
     lazyload = true,
-    order = { 'treeOffset', 'buffers', 'tabs', 'btns' },
+    order = { 'buffers', 'tabs', 'btns' },
     modules = nil,
   },
 
@@ -81,6 +81,7 @@ M.base46 = {
   integrations = {
     'rainbowdelimiters',
     'neogit',
+    'dap',
   },
 }
 

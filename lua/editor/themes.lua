@@ -26,4 +26,12 @@ M.rainbow = function()
   dofile(vim.g.base46_cache .. 'rainbowdelimiters')
 end
 
+M.dap = function()
+  dofile(vim.g.base46_cache .. 'dap')
+  require 'nvchad.dap'
+end
+
+M.setup = function()
+  require('base46').load_all_highlights()
+end
 return M

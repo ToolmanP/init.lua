@@ -12,8 +12,14 @@ return {
     lazy = false,
     config = function()
       require 'nvchad'
-      dofile(vim.g.base46_cache .. 'defaults')
-      dofile(vim.g.base46_cache .. 'statusline')
+    end,
+  },
+  {
+    'NvChad/nvim-colorizer.lua',
+    lazy = false,
+    opts = { user_default_options = { names = false } },
+    config = function(_, opts)
+      require('colorizer').setup(opts)
     end,
   },
 }
