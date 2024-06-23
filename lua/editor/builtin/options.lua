@@ -53,6 +53,10 @@ return {
     -- Decrease mapped sequence wait time
     -- Displays which-key popup sooner
     opt.timeoutlen = 300
+    o.tabstop = 4
+    o.shiftwidth = 4
+    o.softtabstop = 4
+    o.expandtab = false
 
     -- Configure how new splits should be opened
     opt.splitright = true
@@ -72,6 +76,7 @@ return {
 
     -- Minimal number of screen lines to keep above and below the cursor.
     opt.scrolloff = 10
+    o.laststatus = 3
 
     -- [[ Basic Keymaps ]]
     --  See `:help keymap.set()`
