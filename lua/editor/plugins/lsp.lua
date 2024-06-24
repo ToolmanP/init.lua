@@ -189,14 +189,80 @@ return {
           server = {
             on_attach = function(client, bufnr) end,
             default_settings = {
-              ['rust-analyzer'] = {},
+              ['rust-analyzer'] = {
+                cargo = {
+                  allTargets = false,
+                },
+              },
             },
           },
           -- DAP configuration
-          dap = {},
+          dap = { autoload_configurations = false },
         }
       end
     end,
     ft = { 'rust' },
+  },
+  {
+    'wlh320/rime-ls',
+    dependencies = { {
+      'neovim/nvim-lspconfig',
+    } },
+    config = function()
+      local lspconfig = require 'lspconfig'
+      local configs = require 'lspconfig.configs'
+      if not configs.rime_ls then
+        configs.rime_ls = {
+          default_config = {
+            name = 'rime_ls',
+            cmd = { 'rime_ls' },
+            -- cmd = vim.lsp.rpc.connect('127.0.0.1', 9257),
+            filetypes = { '*' },
+            single_file_support = true,
+          },
+          settings = {},
+          docs = {
+            description = [[
+https://www.github.com/wlh320/rime-ls
+
+A language server for librime
+]],
+          },
+        }
+      end
+
+      local rime_on_attach = function(client, _)
+        local toggle_rime = function()
+          client.request('workspace/executeCommand', { command = 'rime-ls.toggle-rime' }, function(_, result, ctx, _)
+            if ctx.client_id == client.id then
+              vim.g.rime_enabled = result
+            end
+          end)
+        end
+        -- keymaps for executing command
+        vim.keymap.set('i', '<C-x>', toggle_rime, { desc = 'Rime Toggle' })
+        vim.keymap.set('n', '<leader>rs', function()
+          vim.lsp.buf.execute_command { command = 'rime-ls.sync-user-data' }
+        end, { desc = 'Rime User Sync' })
+      end
+
+      -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+      lspconfig.rime_ls.setup {
+        init_options = {
+          enabled = vim.g.rime_enabled,
+          shared_data_dir = '/usr/share/rime-data',
+          user_data_dir = '~/.local/share/rime-ls',
+          log_dir = '~/.local/share/rime-ls',
+          max_candidates = 9,
+          trigger_characters = {},
+          schema_trigger_character = '&', -- [since v0.2.0] 当输入此字符串时请求补全会触发 “方案选单”
+        },
+        on_attach = rime_on_attach,
+        capabilities = capabilities,
+      }
+    end,
   },
 }

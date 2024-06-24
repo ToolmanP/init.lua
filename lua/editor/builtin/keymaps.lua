@@ -16,6 +16,17 @@ M.setup = function()
   vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
   vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
   vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+  vim.keymap.set('n', '<C-q>', function()
+    require('nvchad.tabufline').close_buffer()
+  end, { desc = 'Close Buffer' })
+  vim.keymap.set('n', 'L', function()
+    require('nvchad.tabufline').next()
+  end, { desc = 'buffer goto next' })
+
+  vim.keymap.set('n', 'H', function()
+    require('nvchad.tabufline').prev()
+  end, { desc = 'buffer goto prev' })
 end
 
 return M

@@ -30,6 +30,7 @@ return {
     opts = {},
     -- stylua: ignore
     keys = {
+      { "<leader>jf", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash Treesitter" },
       { "<leader>jt", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       { "<leader>js", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
@@ -41,11 +42,11 @@ return {
     dependencies = 'folke/flash.nvim',
     keys = {
       {
-        '<leader>jf',
+        '<leader>jc',
         mode = { 'n', 'x', 'o' },
         function()
           require('flash-zh').jump {
-            chinese_only = false,
+            chinese_only = true,
           }
         end,
         desc = 'Flash between Chinese',

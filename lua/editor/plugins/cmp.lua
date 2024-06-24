@@ -97,11 +97,42 @@ return {
         formatting = formatting_style,
 
         mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<Space>'] = cmp.mapping(function(fallback)
+            local entry = cmp.get_selected_entry()
+            if entry == nil then
+              entry = cmp.core.view:get_first_entry()
+            end
+            if entry and entry.source.name == 'nvim_lsp' and entry.source.source.client.name == 'rime_ls' then
+              cmp.confirm {
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true,
+              }
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<CR>'] = cmp.mapping(function(fallback)
+            local entry = cmp.get_selected_entry()
+            if entry == nil then
+              entry = cmp.core.view:get_first_entry()
+            end
+            if entry and entry.source.name == 'nvim_lsp' and entry.source.source.client.name == 'rime_ls' then
+              cmp.abort()
+            else
+              if entry ~= nil then
+                cmp.confirm {
+                  behavior = cmp.ConfirmBehavior.Replace,
+                  select = true,
+                }
+              else
+                fallback()
+              end
+            end
+          end, { 'i', 's' }),
           ['<C-l>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
