@@ -100,10 +100,6 @@ return {
       require('dap-python').setup '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python'
       setup_llvm()
 
-      if vim.fn.filereadable '.vscode/launch.json' then
-        require('dap.ext.vscode').load_launchjs()
-      end
-
       local dap = require 'dap'
       local dapui = require 'dapui'
       local dtelescope = require('telescope').extensions.dap
