@@ -77,6 +77,30 @@ local function setup_llvm()
       },
       replace = true,
     },
+    {
+      name = 'Attach QEMU(aarch64)',
+      type = 'cppdbg',
+      request = 'launch',
+      miDebuggerServerAddress = 'localhost:1234',
+      program = '{file}',
+      cwd = '${workspaceFolder}',
+      miDebuggerPath = '/usr/bin/gdb',
+      setupCommands = {
+        {
+          text = '-enable-pretty-printing',
+          description = 'enable pretty printing',
+          ignoreFailures = false,
+        },
+      },
+      targetArchitecture = 'arm64',
+      logging = {
+        enabled = true,
+        trace = true,
+        traceResponse = true,
+      },
+      MIMode = 'gdb',
+      replace = true,
+    },
   }
 
   dap.configurations.c = dap.configurations.cpp
