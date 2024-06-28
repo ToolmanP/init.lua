@@ -72,6 +72,8 @@ local servers = {
           },
           ruff = {
             enabled = true,
+            formatEnabled = true,
+            format = { "I" }
           },
           pylint = {
             enabled = true,
@@ -205,6 +207,7 @@ return {
   },
   {
     'wlh320/rime-ls',
+    enabled = false,
     dependencies = { {
       'neovim/nvim-lspconfig',
     } },
