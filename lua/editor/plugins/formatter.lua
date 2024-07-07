@@ -23,6 +23,8 @@ return {
         css = { 'prettier' },
         c = { 'clang-format' },
         cpp = { 'clang-format' },
+        python = { 'isort', 'black' },
+        sh = { 'shfmt' },
       },
     },
   },
