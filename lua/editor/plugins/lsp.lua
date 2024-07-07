@@ -38,10 +38,10 @@ local servers = {
       pylsp = {
         plugins = {
           autopep8 = {
-            enabled = true,
+            enabled = false,
           },
           black = {
-            enabled = false,
+            enabled = true,
           },
           jedi_completion = {
             enabled = true,
@@ -70,10 +70,8 @@ local servers = {
           pydocstyle = {
             enabled = true,
           },
-          ruff = {
+          isort = {
             enabled = true,
-            formatEnabled = true,
-            format = { "I" }
           },
           pylint = {
             enabled = true,
