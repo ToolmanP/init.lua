@@ -26,6 +26,27 @@ return {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-nvim-lua' },
+      {
+        'zbirenbaum/copilot-cmp',
+        config = function()
+          require('copilot_cmp').setup()
+        end,
+        dependencies = {
+          {
+            'zbirenbaum/copilot.lua',
+            config = function()
+              require('copilot').setup {
+                panel = {
+                  enabled = false,
+                },
+                suggestion = {
+                  enabled = false,
+                },
+              }
+            end,
+          },
+        },
+      },
     },
     config = function()
       require('editor.themes').cmp()
@@ -146,6 +167,7 @@ return {
         },
         sources = {
           { name = 'nvim_lsp' },
+          { name = 'copilot' },
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lua' },

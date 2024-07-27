@@ -4,36 +4,30 @@ return {
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = '[G]it', _ = 'which_key_ignore' },
-        ['<leader>j'] = { name = 'Flash [Jump]', _ = 'which_key_ignore' },
+      local wk = require 'which-key'
+      wk.add {
+        { '<leader>c', group = '[C]ode', desc = '[C]ode', icon = '' },
+        { '<leader>d', group = '[D]ebug', desc = '[D]ebug', icon = '󰃤' },
+        { '<leader>r', group = '[R]ename', desc = '[R]ename', icon = "󰑕" },
+        { '<leader>s', group = '[S]earch', desc = '[S]earch', icon = "" },
+        { '<leader>w', group = '[W]orkspace', desc = '[W]orkspace', icon = "" },
+        { '<leader>t', group = '[T]oggle', desc = '[T]oggle', icon = '' },
+        { '<leader>G', group = '[G]it', desc = '[G]it', icon = "" },
+        { '<leader>j', group = '[J]ump', desc = '[J]ump', icon = "󰒬" },
+        { '<leader>f', group = '[F]ile', desc = '[F]ile', icon = '󰪶' },
       }
-      require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
-      }, { mode = 'v' })
     end,
   },
-  { -- Fuzzy Finder (files, lsp, etc)
+  {
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { -- If encountering errors, see telescope-fzf-native README for installation instructions
+      {
         'nvim-telescope/telescope-fzf-native.nvim',
-
-        -- `build` is used to run some command when the plugin is installed/updated.
-        -- This is only run then, not every time Neovim starts up.
         build = 'make',
 
-        -- `cond` is a condition used to determine whether this plugin should be
-        -- installed and loaded.
         cond = function()
           return vim.fn.executable 'make' == 1
         end,
