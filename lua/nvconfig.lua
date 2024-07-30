@@ -87,5 +87,9 @@ M.lsp = {
   signature = true 
 }
 
+M.mason = {
+
+}
+
 
 return M
