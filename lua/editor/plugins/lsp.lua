@@ -83,7 +83,19 @@ local servers = {
       },
     },
   },
-  clangd = {},
+  clangd = {
+    cmd = {
+      'clangd',
+      '--background-index',
+      '--suggest-missing-includes',
+      '--clang-tidy',
+      '--header-insertion=iwyu',
+      '--cross-file-rename',
+      '--offset-encoding=utf-16',
+    },
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+  },
+  taplo = {},
   gopls = {},
 }
 
@@ -175,7 +187,7 @@ return {
       require('go').setup()
     end,
     event = { 'CmdlineEnter' },
-    ft = { 'go', 'gomod' },
+    ft = { 'go' },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
   {
