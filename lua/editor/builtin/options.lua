@@ -32,8 +32,7 @@ return {
     -- Sync clipboard between OS and Neo
     --  Remove this option if you want your OS clipboard to remain independent.
     --  See `:help 'clipboard'`
-    opt.clipboard = 'unnamedplus'
-
+    --
     -- Enable break indent
     opt.breakindent = true
 
@@ -83,5 +82,18 @@ return {
 
     -- Set highlight on search, but clear on pressing <Esc> in normal mode
     opt.hlsearch = true
+
+    opt.clipboard = 'unnamedplus'
+    g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
   end,
 }
