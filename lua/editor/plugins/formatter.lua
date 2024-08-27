@@ -49,6 +49,7 @@ return {
           end,
           cpp = { 'clang-format' },
           python = { 'isort', 'black' },
+          markdown = { 'markdownlint' },
           sh = { 'shfmt' },
         },
       }
