@@ -79,6 +79,9 @@ local servers = {
           pyflakes = {
             enabled = true,
           },
+          ruff = {
+            enabled = true,
+          },
         },
       },
     },
@@ -95,6 +98,7 @@ local servers = {
     },
     filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
   },
+  typst_lsp = {},
   taplo = {},
   gopls = {},
 }
