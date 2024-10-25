@@ -5,8 +5,16 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
+      local markdownlint = require('lint').linters['markdownlint']
+      markdownlint.args = {
+        '--disable',
+        'MD013',
+        'MD028',
+        '--',
+      }
       lint.linters_by_ft = {
-        markdown = { 'markdownlint' },
+        markdown = { 'markdownlint', 'cspell' },
+        gitsendemail = { 'cspell' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
