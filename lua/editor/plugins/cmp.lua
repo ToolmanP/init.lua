@@ -1,5 +1,4 @@
 return {
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -60,17 +59,20 @@ return {
       local formatting_style = {
         fields = field_arrangement[cmp_style] or { 'abbr', 'kind', 'menu' },
 
-        format = function(_, item)
+        format = function(entry, item)
           local icons = require 'nvchad.icons.lspkind'
-          local icon = (cmp_ui.icons and icons[item.kind]) or ''
+          local format_kk = require 'nvchad.cmp.format'
+          item.abbr = item.abbr .. ' '
+          item.menu = cmp_ui.lspkind_text and item.kind or ''
+          item.menu_hl_group = atom_styled and 'LineNr' or 'CmpItemKind' .. (item.kind or '')
+          item.kind = (icons[item.kind] or '') .. ' '
 
-          if cmp_style == 'atom' or cmp_style == 'atom_colored' then
-            icon = ' ' .. icon .. ' '
-            item.menu = cmp_ui.lspkind_text and '   (' .. item.kind .. ')' or ''
-            item.kind = icon
-          else
-            icon = cmp_ui.lspkind_text and (' ' .. icon .. ' ') or icon
-            item.kind = string.format('%s %s', icon, cmp_ui.lspkind_text and item.kind or '')
+          if not cmp_ui.icons_left then
+            item.kind = ' ' .. item.kind
+          end
+
+          if cmp_ui.format_colors.tailwind then
+            format_kk.tailwind(entry, item)
           end
 
           return item
@@ -167,7 +169,6 @@ return {
         },
         sources = {
           { name = 'nvim_lsp' },
-          { name = 'copilot' },
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lua' },
