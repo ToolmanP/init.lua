@@ -84,5 +84,6 @@ return {
     opt.hlsearch = true
 
     opt.clipboard = 'unnamedplus'
+    opt.colorcolumn = "72"
   end,
 }
