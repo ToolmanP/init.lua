@@ -52,9 +52,9 @@ return {
     -- Decrease mapped sequence wait time
     -- Displays which-key popup sooner
     opt.timeoutlen = 300
-    o.tabstop = 4
-    o.shiftwidth = 4
-    o.softtabstop = 4
+    o.tabstop = 2
+    o.shiftwidth = 2
+    o.softtabstop = 2
     o.expandtab = false
 
     -- Configure how new splits should be opened
@@ -84,6 +84,21 @@ return {
     opt.hlsearch = true
 
     opt.clipboard = 'unnamedplus'
-    opt.colorcolumn = "72"
+    local ssh_connection = vim.fn.getenv 'SSH_CONNECTION'
+    if ssh_connection ~= vim.NIL then
+      vim.g.clipboard = {
+        name = 'OSC 52',
+        copy = {
+          ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+          ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+        },
+        paste = {
+          ['+'] = require('vim.ui.clipboard.osc52').paste '+',
+          ['*'] = require('vim.ui.clipboard.osc52').paste '*',
+        },
+      }
+    end
+    opt.colorcolumn = '72'
+    o.shell = '/usr/bin/tmux'
   end,
 }

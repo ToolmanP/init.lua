@@ -7,6 +7,18 @@ M.setup = function()
       vim.highlight.on_yank()
     end,
   })
+  vim.api.nvim_create_autocmd('bufenter', {
+    pattern = '*',
+    callback = function()
+      local config = require 'nvconfig'
+      if vim.bo.ft ~= 'NvTerm_sp' then
+        vim.print(vim.bo.ft)
+        vim.opt.statusline = "%!v:lua.require('nvchad.stl." .. config.ui.statusline.theme .. "')()"
+      else
+        vim.opt.statusline = '%#normal# '
+      end
+    end,
+  })
 end
 
 return M
