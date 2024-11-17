@@ -8,12 +8,12 @@ return {
       wk.add {
         { '<leader>c', group = '[C]ode', desc = '[C]ode', icon = '' },
         { '<leader>d', group = '[D]ebug', desc = '[D]ebug', icon = '󰃤' },
-        { '<leader>r', group = '[R]ename', desc = '[R]ename', icon = "󰑕" },
-        { '<leader>s', group = '[S]earch', desc = '[S]earch', icon = "" },
-        { '<leader>w', group = '[W]orkspace', desc = '[W]orkspace', icon = "" },
+        { '<leader>r', group = '[R]ename', desc = '[R]ename', icon = '󰑕' },
+        { '<leader>s', group = '[S]earch', desc = '[S]earch', icon = '' },
+        { '<leader>w', group = '[W]orkspace', desc = '[W]orkspace', icon = '' },
         { '<leader>t', group = '[T]oggle', desc = '[T]oggle', icon = '' },
-        { '<leader>G', group = '[G]it', desc = '[G]it', icon = "" },
-        { '<leader>j', group = '[J]ump', desc = '[J]ump', icon = "󰒬" },
+        { '<leader>G', group = '[G]it', desc = '[G]it', icon = '' },
+        { '<leader>j', group = '[J]ump', desc = '[J]ump', icon = '󰒬' },
         { '<leader>f', group = '[F]ile', desc = '[F]ile', icon = '󰪶' },
       }
     end,
@@ -113,6 +113,9 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>fb', fb.file_browser, { desc = '[F]ile [B]rowse' })
+      vim.keymap.set('n', '<leader>fl', function()
+        fb.file_browser { cwd = vim.fn.expand '%:p:h', cwd_to_path = true }
+      end, { desc = '[F]ind [L]ocal Files' })
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -136,5 +139,42 @@ return {
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
+  },
+  {
+    'stevearc/quicker.nvim',
+    event = 'FileType qf',
+    ---@module "quicker"
+    ---@type quicker.SetupOptions
+    opts = {},
+  },
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {
+      default_file_explorer = true,
+      columns = {
+        'icon',
+      },
+    },
+    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
+  },
+  {
+    'stevearc/aerial.nvim',
+    config = function()
+      require('aerial').setup {
+        on_attach = function(bufnr)
+          -- Jump forwards/backwards with '{' and '}'
+          vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+        end,
+        vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>'),
+      }
+    end,
+    -- Optional dependencies
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
   },
 }

@@ -12,6 +12,7 @@ local function telescope_start()
   local file_type = vim.bo.filetype
   local cmd = nil
 
+  local type_to_filetypes = {}
   if file_type == 'python' then
     cmd = { 'fd', '-e', 'py' }
   elseif file_type == 'typescript' or file_type == 'javascript' or file_type == 'html' then
@@ -20,8 +21,10 @@ local function telescope_start()
     cmd = { 'fd', '-t', 'x', '--no-ignore' }
   end
 
-  local selection = nil
+  type_to_filetypes['cppdbg'] = { 'c', 'cpp', 'rust' }
 
+  local selection = nil
+  require('dap.ext.vscode').load_launchjs(nil, type_to_filetypes)
   local opts = {
     prompt_title = 'Dap Start Debugging',
     find_command = cmd,

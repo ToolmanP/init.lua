@@ -173,6 +173,7 @@ return {
           { name = 'path' },
           { name = 'nvim_lua' },
           { name = 'buffer' },
+          { name = 'copilot'},
         },
       }
     end,
