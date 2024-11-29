@@ -97,7 +97,14 @@ return {
       luasnip.config.setup {}
 
       cmp.setup {
-
+        enabled = function()
+          local file_type = vim.api.nvim_buf_get_option(0, 'filetype')
+          local buf_type = vim.api.nvim_buf_get_option(0, 'buftype')
+          if file_type == 'prompt' or buf_type == 'prompt' or buf_type == 'ChatPrompt' then
+            return false
+          end
+          return true
+        end,
         window = {
           completion = {
             side_padding = (cmp_style ~= 'atom' and cmp_style ~= 'atom_colored') and 1 or 0,
@@ -173,7 +180,7 @@ return {
           { name = 'path' },
           { name = 'nvim_lua' },
           { name = 'buffer' },
-          { name = 'copilot'},
+          { name = 'copilot' },
         },
       }
     end,

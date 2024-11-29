@@ -2,7 +2,10 @@ local lsp_keymap = function(event, client)
   local map = function(keys, func, desc)
     vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
   end
-
+  local wk = require 'which-key'
+  wk.add {
+    { '<leader>L', group = '[L]SP', icon = '' },
+  }
   map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -11,7 +14,7 @@ local lsp_keymap = function(event, client)
   map('<leader>Lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   map('<leader>rn', require 'nvchad.lsp.renamer', '[R]e[n]ame')
-  map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  map('<leader>Lc', vim.lsp.buf.code_action, '[C]ode [A]ction')
   map('K', vim.lsp.buf.hover, 'Hover Documentation')
   map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
@@ -144,6 +147,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'folke/neodev.nvim', opts = {} },
+      { 'folke/which-key.nvim' },
       {
         'ray-x/lsp_signature.nvim',
         event = 'VeryLazy',
@@ -219,6 +223,7 @@ return {
     end,
     ft = { 'rust' },
   },
+  {},
   {
     'wlh320/rime-ls',
     enabled = false,

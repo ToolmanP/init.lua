@@ -99,6 +99,6 @@ return {
       }
     end
     opt.colorcolumn = '72'
-    o.shell = '/usr/bin/tmux'
+    o.shell = '/usr/bin/fish'
   end,
 }
