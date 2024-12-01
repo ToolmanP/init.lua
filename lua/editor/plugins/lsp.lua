@@ -26,6 +26,7 @@ local lsp_keymap = function(event, client)
 end
 
 local servers = {
+  -- lua/neovim
   lua_ls = {
     settings = {
       Lua = {
@@ -36,59 +37,11 @@ local servers = {
       },
     },
   },
-  pylsp = {
-    settings = {
-      pylsp = {
-        plugins = {
-          autopep8 = {
-            enabled = false,
-          },
-          black = {
-            enabled = true,
-          },
-          jedi_completion = {
-            enabled = true,
-            fuzzy = true,
-          },
-          jedi_definition = {
-            enabled = true,
-            follow_imports = true,
-            follow_builtin_imports = true,
-            follow_builtin_definitions = true,
-          },
-          jedi_hover = {
-            enabled = true,
-          },
-          jedi_references = {
-            enabled = true,
-          },
-          jedi_signature_help = {
-            enabled = true,
-          },
-          jedi_symbols = {
-            enabled = true,
-            all_scopes = true,
-            include_import_symbols = true,
-          },
-          pydocstyle = {
-            enabled = true,
-          },
-          isort = {
-            enabled = true,
-          },
-          pylint = {
-            enabled = true,
-          },
-          pyflakes = {
-            enabled = true,
-          },
-          ruff = {
-            enabled = true,
-          },
-        },
-      },
-    },
-  },
+  -- bash
+  bashls = {},
+  -- fish
+  fishls = {},
+  -- c/c++
   clangd = {
     cmd = {
       'clangd',
@@ -101,9 +54,29 @@ local servers = {
     },
     filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
   },
-  typst_lsp = {},
-  taplo = {},
+  -- golang
   gopls = {},
+  -- typst
+  typst_lsp = {},
+  -- toml
+  taplo = {},
+  -- python
+  basedpyright = {
+    settings = {
+      pyright = {
+        disableOrganizeImports = true, -- Using Ruff
+      },
+      python = {
+        analysis = {
+          ignore = { '*' }, -- Using Ruff
+          typeCheckingMode = 'off', -- Using mypy
+        },
+      },
+    },
+  },
+  -- typescript/javascript/json
+  ts_ls = {},
+  eslint = {},
 }
 
 local ensured_installed = {
