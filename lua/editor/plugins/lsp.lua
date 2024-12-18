@@ -40,7 +40,7 @@ local servers = {
   -- bash
   bashls = {},
   -- fish
-  fishls = {},
+  -- fish_lsp = {},
   -- c/c++
   clangd = {
     cmd = {
@@ -77,6 +77,10 @@ local servers = {
   -- typescript/javascript/json
   ts_ls = {},
   eslint = {},
+  -- haskell
+  hls = {},
+  -- ocaml
+  ocamllsp = {},
 }
 
 local ensured_installed = {
