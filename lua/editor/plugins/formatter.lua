@@ -51,6 +51,7 @@ return {
           python = { 'isort', 'black' },
           markdown = { 'markdownlint' },
           sh = { 'shfmt' },
+          nix = { 'nixpkgs-fmt' },
         },
       }
       require('conform').setup(opts)

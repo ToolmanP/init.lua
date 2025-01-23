@@ -57,7 +57,7 @@ local servers = {
   -- golang
   gopls = {},
   -- typst
-  typst_lsp = {},
+  tinymist = {},
   -- toml
   taplo = {},
   -- python
@@ -81,6 +81,7 @@ local servers = {
   hls = {},
   -- ocaml
   ocamllsp = {},
+  nil_ls = {},
 }
 
 local ensured_installed = {

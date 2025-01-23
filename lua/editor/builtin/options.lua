@@ -52,6 +52,7 @@ return {
     -- Decrease mapped sequence wait time
     -- Displays which-key popup sooner
     opt.timeoutlen = 300
+
     o.tabstop = 2
     o.shiftwidth = 2
     o.softtabstop = 2
