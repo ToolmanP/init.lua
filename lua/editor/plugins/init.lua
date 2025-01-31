@@ -29,8 +29,10 @@ M.setup = function()
   local nuance = require 'editor.plugins.nuance'
   local treesitters = require 'editor.plugins.treesitters'
   local ui = require 'editor.plugins.ui'
+  local cursor = require 'editor.plugins.cursor'
 
   local plugins = merge_plugins {
+    cursor,
     ui,
     lsp,
     cmp,
