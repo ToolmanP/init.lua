@@ -6,6 +6,7 @@ return {
       require('which-key').setup()
       local wk = require 'which-key'
       wk.add {
+        { '<leader>a', group = '[A]vante', desc = '[A]vante', icon = '󰁤' },
         { '<leader>d', group = '[D]ebug', desc = '[D]ebug', icon = '󰃤' },
         { '<leader>r', group = '[R]ename', desc = '[R]ename', icon = '󰑕' },
         { '<leader>s', group = '[S]earch', desc = '[S]earch', icon = '' },
@@ -15,7 +16,7 @@ return {
         { '<leader>j', group = '[J]ump', desc = '[J]ump', icon = '󰒬' },
         { '<leader>f', group = '[F]ile', desc = '[F]ile', icon = '󰪶' },
         { '<leader>G', group = '[G]it', desc = '[G]it', icon = '' },
-        { '<leader>g', group = '[G]it', desc = '[G]it', icon = '' },
+        { '<leader>g', group = '[G]it', desc = '[G]it', icon = '' },
       }
     end,
   },
@@ -150,14 +151,28 @@ return {
   },
   {
     'stevearc/oil.nvim',
-    ---@module 'oil'
-    ---@type oil.SetupOpts
-    opts = {
-      default_file_explorer = true,
-      columns = {
-        'icon',
-      },
-    },
+    config = function()
+      require('oil').setup {
+        default_file_explorer = true,
+        columns = {
+          'icon',
+          'size',
+          'mtime',
+        },
+        view_options = {
+          show_hidden = true
+        }
+      }
+      vim.keymap.set('n', '<leader>o', function()
+        vim.cmd 'tabnew'
+        require('oil').open(nil, {
+          preview = {
+            vertical = true,
+            split = 'botright'
+          }
+        })
+      end, { desc = 'Open Oil in New Tab' })
+    end,
     dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
   },
   {
@@ -176,53 +191,6 @@ return {
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
-    },
-  },
-  {
-    'jackMort/ChatGPT.nvim',
-    event = 'VeryLazy',
-    enabled = false,
-    config = function()
-      local home = vim.fn.expand '$HOME'
-      require('chatgpt').setup {
-        api_key_cmd = 'gpg --decrypt ' .. home .. '/.secrets/gpt.secret.gpg',
-        model = 'gpt-4-1106-preview',
-        frequency_penalty = 0,
-        presence_penalty = 0,
-        max_tokens = 4095,
-        temperature = 0.2,
-        top_p = 0.1,
-        n = 1,
-        popup_input = {
-          buf_options = {
-            filetype = 'prompt',
-          },
-        },
-      }
-      local wk = require 'which-key'
-      wk.add {
-        { '<leader>c', group = '[C]hat', icon = '󰭹' },
-        { '<leader>cc', '<cmd>ChatGPT<cr>', desc = '[C]hat With GPT' },
-        { '<leader>ce', '<cmd>ChatGPTEditWithInstruction<cr>', desc = '[C]hat Edit With Instruction', mode = { 'n', 'v' } },
-        { '<leader>cg', '<cmd>ChatGPTRun grammar_correction<cr>', desc = '[C]hat Grammar Correction', mode = { 'n', 'v' } },
-        { '<leader>ct', '<cmd>ChatGPTRun translate<cr>', desc = '[C]hat Translate', mode = { 'n', 'v' } },
-        { '<leader>ck', '<cmd>ChatGPTRun keywords<cr>', desc = '[C]hat Keywords', mode = { 'n', 'v' } },
-        { '<leader>cd', '<cmd>ChatGPTRun docstring<cr>', desc = '[C]hat Docstring', mode = { 'n', 'v' } },
-        { '<leader>ca', '<cmd>ChatGPTRun add_tests<cr>', desc = '[C]hat Add Tests', mode = { 'n', 'v' } },
-        { '<leader>co', '<cmd>ChatGPTRun optimize_code<cr>', desc = '[C]hat Optimize Code', mode = { 'n', 'v' } },
-        { '<leader>cs', '<cmd>ChatGPTRun summarize<cr>', desc = '[C]hat Summarize', mode = { 'n', 'v' } },
-        { '<leader>cf', '<cmd>ChatGPTRun fix_bugs<cr>', desc = '[C]hat Fix Bugs', mode = { 'n', 'v' } },
-        { '<leader>cx', '<cmd>ChatGPTRun explain_code<cr>', desc = '[C]hat Explain Code', mode = { 'n', 'v' } },
-        { '<leader>cr', '<cmd>ChatGPTRun roxygen_edit<cr>', desc = '[C]hat Roxygen Edit', mode = { 'n', 'v' } },
-        { '<leader>cl', '<cmd>ChatGPTRun code_readability_analysis<cr>', desc = '[C]hat Code Readability Analysis', mode = { 'n', 'v' } },
-      }
-    end,
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'nvim-lua/plenary.nvim',
-      'folke/trouble.nvim', -- optional
-      'folke/which-key.nvim',
-      'nvim-telescope/telescope.nvim',
     },
   },
 }
