@@ -67,7 +67,7 @@ local options = {
       { txt = '󰈭  Find Word', keys = 'fw', cmd = 'Telescope live_grep' },
       { txt = '󱥚  Themes', keys = 'th', cmd = ":lua require('nvchad.themes').open()" },
       { txt = '  Mappings', keys = 'ch', cmd = 'NvCheatsheet' },
-
+      { txt = '  Projects', keys = 'pp', cmd = ":lua require'telescope'.extensions.projects.projects{}" },
       { txt = '─', hl = 'NvDashLazy', no_gap = true, rep = true },
 
       {

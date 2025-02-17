@@ -34,6 +34,12 @@ return {
           return vim.fn.executable 'make' == 1
         end,
       },
+      {
+        'ahmedkhalf/project.nvim',
+        config = function()
+          require('project_nvim').setup {}
+        end,
+      },
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       { 'nvim-telescope/telescope-file-browser.nvim' },
@@ -101,6 +107,7 @@ return {
       pcall(require('telescope').load_extension, 'file_browser')
       pcall(require('telescope').load_extension, 'themes')
       pcall(require('telescope').load_extension, 'terms')
+      pcall(require('telescope').load_extension 'projects')
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       local fb = require('telescope').extensions.file_browser
@@ -160,16 +167,16 @@ return {
           'mtime',
         },
         view_options = {
-          show_hidden = true
-        }
+          show_hidden = true,
+        },
       }
       vim.keymap.set('n', '<leader>o', function()
         vim.cmd 'tabnew'
         require('oil').open(nil, {
           preview = {
             vertical = true,
-            split = 'botright'
-          }
+            split = 'botright',
+          },
         })
       end, { desc = 'Open Oil in New Tab' })
     end,

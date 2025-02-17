@@ -10,14 +10,14 @@ return {
       vendors = {
         qwen = {
           __inherited_from = 'openai',
-          api_key_name = 'DASHSCOPE_API_KEY',
+          api_key_name = 'cmd:gpg -d ' .. os.getenv("HOME") .. "/.secrets/dashscope.gpg",
           endpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1',
           model = 'qwen-coder-plus-latest',
           disable_tools = true,
         },
         deepseek = {
           __inherited_from = 'openai',
-          api_key_name = 'SILICON_FLOW_API_KEY',
+          api_key_name = 'cmd:gpg -d ' .. os.getenv("HOME") .. "/.secrets/siliconflow.gpg",
           endpoint = 'https://api.siliconflow.cn/v1',
           model = 'deepseek-ai/DeepSeek-R1',
           disable_tools = true,
