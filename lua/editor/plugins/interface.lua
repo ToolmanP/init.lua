@@ -17,6 +17,9 @@ return {
         { '<leader>f', group = '[F]ile', desc = '[F]ile', icon = '󰪶' },
         { '<leader>G', group = '[G]it', desc = '[G]it', icon = '' },
         { '<leader>g', group = '[G]it', desc = '[G]it', icon = '' },
+        { '<leader>g', group = '[G]it', desc = '[G]it', icon = '' },
+        { '<leader>n', group = '[N]ext', desc = '[N]ext Move', icon = '' },
+        { '<leader>p', group = '[P]rev', desc = '[P]rev Move', icon = '' },
       }
     end,
   },
@@ -114,6 +117,11 @@ return {
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sa', function()
+        builtin.find_files {
+          find_command = { 'fd', '--type', 'f', '--no-hidden', '--no-ignore', '--follow', '--exclude', '.git' },
+        }
+      end, { desc = '[S]earch [F]iles (No Ignore)' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -177,7 +185,9 @@ return {
             vertical = true,
             split = 'botright',
           },
-        })
+        }, function()
+          require('nvchad.term').toggle { pos = 'sp', id = 'htoggleTerm' }
+        end)
       end, { desc = 'Open Oil in New Tab' })
     end,
     dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons

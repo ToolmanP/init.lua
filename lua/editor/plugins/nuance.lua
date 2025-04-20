@@ -4,15 +4,22 @@ return {
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   {
-    'windwp/nvim-autopairs',
-    event = 'InsertEnter',
-    -- Optional dependency
-    dependencies = { 'hrsh7th/nvim-cmp' },
+    'altermo/ultimate-autopair.nvim',
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    branch = 'v0.6', --recommended as each new version will have breaking changes
     config = function()
-      require('nvim-autopairs').setup {}
-      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-      local cmp = require 'cmp'
-      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+      require('ultimate-autopair').setup {
+        bs = {
+          map = '<A-bs>',
+          cmap = '<A-bs>',
+        },
+        fastwarp = {
+          multi = true,
+          {},
+          { faster = true, map = '<C-e>', cmap = '<C-e>' },
+        },
+        suround = true,
+      }
     end,
   },
   { -- Collection of various small independent plugins/modules
@@ -20,6 +27,7 @@ return {
     config = function()
       require('mini.ai').setup { n_lines = 500 }
       require('mini.surround').setup()
+      require('mini.sessions').setup()
     end,
   },
   {
@@ -30,11 +38,10 @@ return {
     opts = {},
     -- stylua: ignore
     keys = {
-      { "m", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash Jump" },
-      { "<leader>jt", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "<leader>js", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    },
+      { "<c-s>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash Jump" },
+      { "<a-f>", mode = { "n" }, function() require("flash").treesitter() end, desc = "Flash treesitter"},
+    }
+,
   },
   {
     'rainzm/flash-zh.nvim',
@@ -42,7 +49,7 @@ return {
     dependencies = 'folke/flash.nvim',
     keys = {
       {
-        '<leader>jc',
+        '<c-a>',
         mode = { 'n', 'x', 'o' },
         function()
           require('flash-zh').jump {

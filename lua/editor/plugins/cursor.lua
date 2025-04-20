@@ -3,25 +3,24 @@ return {
     'yetone/avante.nvim',
     event = 'VeryLazy',
     lazy = false,
+    enabled = true,
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       -- add any opts here
       provider = 'qwen',
+      auto_suggestions_provider = 'qwen',
+      behavior = {
+        auto_suggestions = true,
+      },
       vendors = {
         qwen = {
           __inherited_from = 'openai',
-          api_key_name = 'cmd:gpg -d ' .. os.getenv("HOME") .. "/.secrets/dashscope.gpg",
+          api_key_name = 'cmd:gpg -dq ' .. os.getenv 'HOME' .. '/.secrets/dashscope.gpg',
           endpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1',
           model = 'qwen-coder-plus-latest',
+          max_tokens = 8192,
           disable_tools = true,
         },
-        deepseek = {
-          __inherited_from = 'openai',
-          api_key_name = 'cmd:gpg -d ' .. os.getenv("HOME") .. "/.secrets/siliconflow.gpg",
-          endpoint = 'https://api.siliconflow.cn/v1',
-          model = 'deepseek-ai/DeepSeek-R1',
-          disable_tools = true,
-        }
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

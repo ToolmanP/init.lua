@@ -51,7 +51,8 @@ return {
           python = { 'isort', 'black' },
           markdown = { 'markdownlint' },
           sh = { 'shfmt' },
-          nix = { 'nixpkgs-fmt' },
+          nix = { 'nixfmt' },
+          flakes = { 'nixfmt' },
         },
       }
       require('conform').setup(opts)

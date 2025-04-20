@@ -7,10 +7,12 @@ return {
       auto_install = true,
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { 'ruby' },
+        disable = { 'latex' },
+        additional_vim_regex_highlighting = { 'latex', 'markdown' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true },
     },
+    ignore_install = { 'latex', 'tex' },
     config = function(_, opts)
       require('nvim-treesitter.install').prefer_git = true
       ---@diagnostic disable-next-line: missing-fields
@@ -26,60 +28,38 @@ return {
       require('nvim-treesitter.configs').setup {
         textobjects = {
           select = {
+            enable = false,
+          },
+          swap = {
             enable = true,
-            lookahead = true,
-            keymaps = {
-              ['af'] = '@function.outer',
-              ['if'] = '@function.inner',
-              ['aC'] = '@class.outer',
-              ['iC'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
-              ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
+            swap_next = {
+              ['<leader>np'] = '@parameter.inner',
             },
-            selection_modes = {
-              ['@parameter.outer'] = 'v', -- charwise
-              ['@function.outer'] = 'V', -- linewise
-              ['@class.outer'] = '<c-v>', -- blockwise
+            swap_previous = {
+              ['<leader>pp'] = '@parameter.inner',
             },
-            swap = {
-              enable = true,
-              swap_next = {
-                ['<leader>a'] = '@parameter.inner',
-              },
-              swap_previous = {
-                ['<leader>A'] = '@parameter.inner',
-              },
+          },
+          move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            goto_next = {
+              ['ns'] = '@scope.inner',
+              ['nb'] = { query = '@block.outer', desc = 'Next Block inner start' },
+              ['<leader>nf'] = { query = '@function.inner', desc = 'Next function inner start' },
+              ['<leader>nF'] = { query = '@function.outer', desc = 'Next function outer start' },
+              ['<leader>nc'] = { query = '@class.inner ', desc = 'Next class inner start' },
+              ['<leader>nC'] = { query = '@class.outer', desc = 'Next class outer start' },
+              ['nz'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
             },
-            move = {
-              enable = true,
-              set_jumps = true, -- whether to set jumps in the jumplist
-              goto_next_start = {
-                [']f'] = '@function.outer',
-                [']C'] = { query = '@class.outer', desc = 'Next class start' },
-                --
-                [']l'] = '@loop.*',
-                [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
-                [']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
-              },
-              goto_next_end = {
-                [']f'] = '@function.outer',
-                [']C'] = '@class.outer',
-              },
-              goto_previous_start = {
-                ['[f'] = '@function.outer',
-                ['[C'] = '@class.outer',
-              },
-              goto_previous_end = {
-                ['[f'] = '@function.outer',
-                ['[C'] = '@class.outer',
-              },
-              goto_next = {
-                [']s'] = '@scope.outer',
-              },
-              goto_previous = {
-                ['[s'] = '@scope.outer',
-              },
+            goto_previous = {
+              ['ps'] = '@scope.inner',
+              ['pb'] = { query = '@block.outer', desc = 'Next Block inner start' },
+              ['<leader>pf'] = { query = '@function.inner', desc = 'Next function inner start' },
+              ['<leader>pF'] = { query = '@function.outer', desc = 'Next function outer start' },
+              ['<leader>pc'] = { query = '@class.inner ', desc = 'Next class inner start' },
+              ['<leader>pC'] = { query = '@class.outer', desc = 'Next class outer start' },
+              ['pz'] = { query = '@fold', query_group = 'folds', desc = 'Previous fold' },
             },
-            include_surrounding_whitespace = true,
           },
         },
       }
