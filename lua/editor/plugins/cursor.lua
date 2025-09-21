@@ -12,7 +12,7 @@ return {
       behavior = {
         auto_suggestions = true,
       },
-      vendors = {
+      providers = {
         qwen = {
           __inherited_from = 'openai',
           api_key_name = 'cmd:gpg -dq ' .. os.getenv 'HOME' .. '/.secrets/dashscope.gpg',
