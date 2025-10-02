@@ -5,6 +5,15 @@ return {
     opts = require "configs.conform",
   },
 
+  {
+    "stevearc/overseer.nvim",
+    config = function()
+      require("overseer").setup {
+        templates = { "builtin", "oneshot.cpp" },
+      }
+    end,
+    event = "BufEnter",
+  },
   -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
