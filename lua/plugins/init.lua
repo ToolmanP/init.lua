@@ -88,10 +88,11 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
     branch = "master",
     build = ":TSUpdate",
-    opts = {
-      auto_install = true,
-    },
+    config = require("configs.treesitter").config,
   },
 }
