@@ -16,7 +16,7 @@ nmap("<leader>Ld", require("telescope.builtin").lsp_type_definitions, "Type [D]e
 nmap("<leader>Ls", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 nmap("<leader>Lw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
-local servers = { "html", "cssls", "clangd", "luals", "gopls", "basedpyright", "bashls", "copilot" }
+local servers = { "html", "cssls", "clangd", "luals", "gopls", "basedpyright", "bashls", "copilot", "ruby_lsp" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers

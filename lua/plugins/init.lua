@@ -1,10 +1,9 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    event = "BufEnter", -- uncomment for format on save
     opts = require "configs.conform",
   },
-
   {
     "stevearc/overseer.nvim",
     config = function()
@@ -50,6 +49,7 @@ return {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
+    branch = "treesitter-main",
     config = require("configs.go").config,
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
@@ -90,9 +90,23 @@ return {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
+      branch = "main",
     },
-    branch = "master",
+    branch = "main",
     build = ":TSUpdate",
+    lazy = false,
     config = require("configs.treesitter").config,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    dependencies = {
+      "saghen/blink.cmp",
+    },
+    event = "BufEnter",
+    config = require("configs.lint").config,
+  },
+  {
+    "nmac427/guess-indent.nvim",
+    opts = {},
   },
 }
