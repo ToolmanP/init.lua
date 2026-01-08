@@ -17,5 +17,11 @@ M.config = function()
   map({ "n" }, "<leader>Gr", function()
     neogit.open { "reset" }
   end, { desc = "git reset" })
+  map({ "n" }, "<leader>Gp", function()
+    neogit.open { "push" }
+  end, { desc = "git push" })
+  map({ "n" }, "<leader>GP", function()
+    neogit.open { "pull" }
+  end, { desc = "git pull" })
 end
 return M
