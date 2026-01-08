@@ -40,7 +40,7 @@ M.config = function(lp, opts)
   local map = vim.keymap.set
   map("n", "<leader><leader>", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
   map("n", "<leader>fr", "<cmd>Telescope live_grep<CR>", { desc = "telescope [f]ile g[r]ep" })
-  map("n", "<leader>fb", "<CMD>Telescope file_browser<CR>", { desc = "telescope [f]ile [b]rowser" })
+  map("n", "<leader>fB", "<CMD>Telescope file_browser<CR>", { desc = "telescope [f]ile [b]rowser" })
   map("n", "<leader>fl", "<CMD>Telescope file_browser path=%:p:h select_buffer=true<CR>", { desc = "telescope [f]ile [l]ocal" })
   map(
     "n",

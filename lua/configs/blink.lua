@@ -3,6 +3,9 @@ local M = {}
 M.config = function(lp, opts)
   table.insert(opts.sources.default, 1, "lazydev")
   table.insert(opts.sources.default, 1, "copilot")
+  opts.enabled = function()
+    return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false and vim.bo.filetype ~= "DressingInput"
+  end
   opts.sources.providers = {
     lazydev = {
       name = "LazyDev",
