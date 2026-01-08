@@ -109,4 +109,5 @@ return {
     "nmac427/guess-indent.nvim",
     opts = {},
   },
+  { "wakatime/vim-wakatime", lazy = false },
 }

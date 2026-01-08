@@ -15,6 +15,11 @@ M.base46 = {
 
 M.nvdash = { load_on_startup = true }
 M.ui = {
+  cmp = {
+    icons_left = true,
+    style = "atom_colored",
+    format_colors = { lsp = true, icon = "󱓻" },
+  },
   tabufline = {
     lazyload = false,
   },

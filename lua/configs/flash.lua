@@ -2,7 +2,7 @@ local M = {}
 
 M.keys = {
   {
-    "1",
+    ";",
     mode = { "n", "x", "o" },
     function()
       require("flash").jump()
@@ -10,7 +10,7 @@ M.keys = {
     desc = "Flash",
   },
   {
-    "2",
+    "<C-t>",
     mode = { "n", "x", "o" },
     function()
       require("flash").treesitter()
@@ -18,7 +18,7 @@ M.keys = {
     desc = "Flash Treesitter",
   },
   {
-    "3",
+    "<C-s>",
     mode = { "o", "x" },
     function()
       require("flash").treesitter_search()
