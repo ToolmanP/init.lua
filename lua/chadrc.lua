@@ -11,6 +11,7 @@ M.base46 = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
   },
+  integrations = { "neogit", "avante", "rainbowdelimiters" },
 }
 
 M.nvdash = { load_on_startup = true }

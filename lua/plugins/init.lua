@@ -109,5 +109,24 @@ return {
     "nmac427/guess-indent.nvim",
     opts = {},
   },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = require "configs.git".config,
+  },
+  {
+    "NeogitOrg/neogit",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+
+      -- Only one of these is needed.
+      "nvim-telescope/telescope.nvim", -- optional
+      "ibhagwan/fzf-lua", -- optional
+      "nvim-mini/mini.pick", -- optional
+      "folke/snacks.nvim", -- optional
+    },
+    config = require("configs.neogit").config
+  },
   { "wakatime/vim-wakatime", lazy = false },
 }

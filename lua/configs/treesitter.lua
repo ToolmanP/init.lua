@@ -54,21 +54,21 @@ M.config = function()
     end
   end
 
-  map({ "x", "o" }, "am", select_textobject "@function.outer")
-  map({ "x", "o" }, "im", select_textobject "@function.inner")
-  map({ "x", "o" }, "ac", select_textobject "@class.outer")
-  map({ "x", "o" }, "ic", select_textobject "@class.inner")
-  map({ "x", "o" }, "ab", select_textobject "@block.outer")
-  map({ "x", "o" }, "ib", select_textobject "@block.inner")
-  map({ "x", "o" }, "av", select_textobject "@parameter.outer")
-  map({ "x", "o" }, "iv", select_textobject "@parameter.inner")
+  map({ "x", "o" }, "am", select_textobject "@function.outer", { desc = "function" })
+  map({ "x", "o" }, "im", select_textobject "@function.inner", { desc = "function" })
+  map({ "x", "o" }, "ac", select_textobject "@class.outer", { desc = "class" })
+  map({ "x", "o" }, "ic", select_textobject "@class.inner", { desc = "class" })
+  map({ "x", "o" }, "ab", select_textobject "@block.outer", { desc = "block" })
+  map({ "x", "o" }, "ib", select_textobject "@block.inner", { desc = "block" })
+  map({ "x", "o" }, "av", select_textobject "@parameter.outer", { desc = "variable" })
+  map({ "x", "o" }, "iv", select_textobject "@parameter.inner", { desc = "variable" })
 
-  map({ "n", "x", "o" }, "]b", gt("next", "@block.outer"))
-  map({ "n", "x", "o" }, "]v", gt("next", "@parameter.outer"))
-  map({ "n", "x", "o" }, "[b", gt("previous", "@block.outer"))
-  map({ "n", "x", "o" }, "[v", gt("previous", "@parameter.outer"))
-  map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-  map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+  map({ "n", "x", "o" }, "]b", gt("next", "@block.outer"), { desc = "next block" })
+  map({ "n", "x", "o" }, "]v", gt("next", "@parameter.outer"), { desc = "next variable" })
+  map({ "n", "x", "o" }, "[b", gt("previous", "@block.outer"), { desc = "previous block" })
+  map({ "n", "x", "o" }, "[v", gt("previous", "@parameter.outer"), { desc = "previous variable" })
+  map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { desc = "Repeat Last Next" })
+  map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { desc = "Repeat Last Previous" })
 end
 
 return M
